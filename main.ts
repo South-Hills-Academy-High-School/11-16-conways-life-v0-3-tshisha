@@ -7,6 +7,18 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     cursorY += -10
     drawGrid()
 })
+function countNeighborsBottomLeft () {
+    neighborCount = 0
+    neighborCount += grid[11 - 0][0 + 1]
+    neighborCount += grid[11 - 1][0 + 0]
+    neighborCount += grid[11 + 1][0 + 1]
+    neighborCount += copyRight(10)
+    neighborCount += copyRight(0)
+    neighborCount += copyRight(11)
+    neighborCount += copyTop()[0]
+    neighborCount += copyTop()[1]
+    return neighborCount
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     grid[cursorGridRow][cursorGridCol] = grid[cursorGridRow][cursorGridCol] * -1 + 1
     drawGrid()
@@ -94,6 +106,18 @@ function countNeighborsTopLeft () {
     neighborCount += copyBottom()[1]
     return neighborCount
 }
+function countNeighborsBottomRight () {
+    neighborCount = 0
+    neighborCount += grid[11 - 0][15 - 1]
+    neighborCount += grid[11 - 1][15 - 1]
+    neighborCount += grid[11 - 1][15 + 0]
+    neighborCount += copyLeft(10)
+    neighborCount += copyLeft(0)
+    neighborCount += copyLeft(11)
+    neighborCount += copyTop()[15]
+    neighborCount += copyTop()[14]
+    return neighborCount
+}
 function countNeighbors (currentRow: number, currentCol: number) {
     neighborCount = 0
     if (currentRow == 0) {
@@ -135,9 +159,9 @@ function copyLeft (whichRow: number) {
 function countNeighborsWrapBottom (currentRow: number, currentCol: number) {
     neighborCount = 0
     if (currentCol == 0) {
-        return 0
+        return countNeighborsBottomLeft()
     } else if (currentCol == 15) {
-        return 0
+        return countNeighborsTopRight()
     } else {
         neighborCount += copyTop()[currentCol - 1]
         neighborCount += copyTop()[currentCol - 0]
@@ -153,11 +177,11 @@ function countNeighborsWrapBottom (currentRow: number, currentCol: number) {
 function copyTop () {
     return grid[0]
 }
-let neighborCount = 0
 let gridSprite: Sprite = null
 let currentX = 0
 let currentY = 0
 let gridSprites: Sprite[] = []
+let neighborCount = 0
 let neighborCountSprite: TextSprite = null
 let cursorY = 0
 let cursorX = 0
